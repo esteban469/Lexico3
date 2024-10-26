@@ -1,0 +1,48 @@
+# __ Caracter
+include __ Identificador
+< __ OperadorRelacional
+stdio __ Identificador
+> __ OperadorRelacional
+{ __ InicioBloque
+230 __ Numero
+230e-30 __ Numero
+230e+30 __ Numero
+230.30e30 __ Numero
+230.30e-30 __ Numero
+230.30e+30 __ Numero
+"hola mundo" __ Cadena
+#64 __ Caracter
+- __ OperadorTermino
+'@' __ Caracter
+radio __ Identificador
+; __ FinSentencia
+< __ OperadorRelacional
+<> __ OperadorRelacional
+> __ OperadorRelacional
+! __ OperadorLogico
+!= __ OperadorRelacional
+== __ OperadorRelacional
+= __ Asignacion
+; __ FinSentencia
+&& __ OperadorLogico
+& __ Caracter
+|| __ OperadorLogico
+| __ Caracter
+++ __ IncrementoTermino
++ __ OperadorTermino
+-- __ IncrementoTermino
+- __ OperadorTermino
++= __ IncrementoTermino
+-= __ IncrementoTermino
+* __ OperadorFactor
+*= __ IncrementoFactor
+/= __ IncrementoFactor
+% __ OperadorFactor
+%= __ IncrementoFactor
+"" __ Cadena
+' ' __ Caracter
+; __ FinSentencia
+
+-----------------------------------
+
+Líneas del archivo: 18
