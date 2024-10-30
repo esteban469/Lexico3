@@ -1,4 +1,3 @@
-
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -7,6 +6,9 @@ using System.IO;
 using System.Linq.Expressions;
 using System.Security.Cryptography;
 using System.Runtime.InteropServices;
+using System.Data;
+using ExcelDataReader;
+using System.Text;
 
 namespace Lexico_3
 {
@@ -16,12 +18,26 @@ namespace Lexico_3
         public StreamWriter log;
         public StreamWriter asm;
         public int linea = 1;
-
         const int F = -1;
 
         const int E = -2;
 
-        int[,] TRAND = {  
+        int[,] TRAND;
+
+        public Lexico(bool leerDesdeExcel)
+        {
+            log = new StreamWriter("prueba.log");
+            asm = new StreamWriter("prueba.asm");
+            log.AutoFlush = true;
+            asm.AutoFlush = true;
+
+            if (leerDesdeExcel)
+            {
+                TRAND = LeerMatrizDesdeExcel("C:\\Users\\Esteban\\Documents\\ITQ\\AUTOMATAS\\Lexico3\\TRAND.xlsx");
+            }
+            else
+            {
+                TRAND = new int[,] {
                         { 0,  1,  2,  33, 1,  12, 14, 8,  9,  10, 11, 23, 16, 16, 18, 20, 21, 26, 25, 27, 29, 32, 34, 0,  F, 33},
                         { F,  1,  1,  F,  1,  F,  F,  F,  F,  F,  F,  F,  F,  F,  F,  F,  F,  F,  F,  F,  F,  F,  F,  F,  F, F},
                         { F,  F,  2,  3,  5,  F,  F,  F,  F,  F,  F,  F,  F,  F,  F,  F,  F,  F,  F,  F,  F,  F,  F,  F,  F, F},
@@ -60,14 +76,9 @@ namespace Lexico_3
                         {35,  35, 35, 35, 35, 35, 35, 35, 35, 35, 35, 35, 35, 35, 35, 35, 35, 35, 35, 35, 35, 35, 35, 0,  35,35},
                         {36,  36, 36, 36, 36, 36, 36, 36, 36, 36, 36, 36, 37, 36, 36, 36, 36, 36, 36, 36, 36, 36, 36, 36, 36,36},
                         {36,  36, 36, 36, 36, 36, 36, 36, 36, 36, 36, 36, 37, 36, 36, 36, 36, 36, 36, 36, 36, 36, 0,  36, 36,36},
+                };
+            }
 
-        };
-        public Lexico()
-        {
-            log = new StreamWriter("prueba.log");
-            asm = new StreamWriter("prueba.asm");
-            log.AutoFlush = true;
-            asm.AutoFlush = true;
             if (File.Exists("prueba.cpp"))
             {
                 archivo = new StreamReader("prueba.cpp");
@@ -78,9 +89,49 @@ namespace Lexico_3
             }
         }
 
+
+        // METODO PARA LEER MATRIZ DE EXCEL
+        private int[,] LeerMatrizDesdeExcel(string rutaArchivo)
+        {
+            System.Text.Encoding.RegisterProvider(System.Text.CodePagesEncodingProvider.Instance);
+            int[,] matrizExcel = new int[38, 26];
+
+            using (var stream = File.Open(rutaArchivo, FileMode.Open, FileAccess.Read))
+            using (var reader = ExcelReaderFactory.CreateReader(stream))
+            {
+                var dataSet = reader.AsDataSet();
+                var dataTable = dataSet.Tables[0];
+
+                for (int i = 0; i < dataTable.Rows.Count; i++)
+                {
+                    for (int j = 0; j < dataTable.Columns.Count; j++)
+                    {
+                        string cellValue = dataTable.Rows[i][j].ToString();
+
+                        if (cellValue == "F")
+                        {
+                            matrizExcel[i, j] = -1;
+                        }
+                        else if (cellValue == "E")
+                        {
+                            matrizExcel[i, j] = -2;
+                        }
+                        else
+                        {
+                            matrizExcel[i, j] = int.Parse(cellValue);
+                        }
+                    }
+                }
+            }
+
+            return matrizExcel;
+        }
+
+
+
         public Lexico(string nombreArchivo)
         {
-            string nombreArchivoWithoutExt = Path.GetFileNameWithoutExtension(nombreArchivo);   /* Obtenemos el nombre del archivo sin la extensión para poder crear el .log y .asm */
+            string nombreArchivoWithoutExt = Path.GetFileNameWithoutExtension(nombreArchivo);
             if (File.Exists(nombreArchivo))
             {
                 log = new StreamWriter(nombreArchivoWithoutExt + ".log");
@@ -95,7 +146,7 @@ namespace Lexico_3
             }
             else
             {
-                throw new FileNotFoundException("La extensión " + Path.GetExtension(nombreArchivo) + " no existe");    /* Defino una excepción que indica que existe un error con el archivo en caso de no ser encontrado */
+                throw new FileNotFoundException("La extensión " + Path.GetExtension(nombreArchivo) + " no existe");
             }
         }
         public void Dispose()
@@ -120,7 +171,7 @@ namespace Lexico_3
             {
                 return 0;
             }
-             else if (char.ToLower(c) == 'e')
+            else if (char.ToLower(c) == 'e')
             {
                 return 4;
             }
@@ -208,7 +259,7 @@ namespace Lexico_3
             {
                 return 22;
             }
-           
+
             return 25;
         }
         private void Clasifica(int estado)

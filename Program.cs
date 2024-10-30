@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+using System.IO;
 
 namespace Lexico_3
 {
@@ -11,7 +10,8 @@ namespace Lexico_3
         {
             try
             {
-                using (Lexico lexico = new Lexico())
+                bool leerDesdeExcel = true; // true = matriz de excel, false = matriz TRAND
+                using (Lexico lexico = new Lexico(leerDesdeExcel))
                 {
                     while (!lexico.finArchivo())
                     {

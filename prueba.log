@@ -7,9 +7,16 @@ stdio __ Identificador
 230 __ Numero
 230e-30 __ Numero
 230e+30 __ Numero
-230.30e30 __ Numero
-230.30e-30 __ Numero
-230.30e+30 __ Numero
+230.30 __ Numero
+e30 __ Identificador
+230.30 __ Numero
+e __ Identificador
+- __ OperadorTermino
+30 __ Numero
+230.30 __ Numero
+e __ Identificador
++ __ OperadorTermino
+30 __ Numero
 "hola mundo" __ Cadena
 #64 __ Caracter
 - __ OperadorTermino
@@ -30,7 +37,8 @@ radio __ Identificador
 | __ Caracter
 ++ __ IncrementoTermino
 + __ OperadorTermino
--- __ IncrementoTermino
+- __ OperadorTermino
+- __ OperadorTermino
 - __ OperadorTermino
 += __ IncrementoTermino
 -= __ IncrementoTermino
